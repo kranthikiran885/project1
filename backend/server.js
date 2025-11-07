@@ -9,10 +9,18 @@ require("dotenv").config()
 const app = express()
 const server = http.createServer(app)
 
+// Helper function to normalize and allow multiple origins
+const getAllowedOrigins = () => {
+  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:3000"
+  // Remove trailing slash for consistency
+  const normalized = frontendUrl.replace(/\/$/, '')
+  return [normalized, "http://localhost:3000", "http://localhost:3001"]
+}
+
 const io = socketIo(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
-    methods: ["GET", "POST", "PUT"],
+    origin: getAllowedOrigins(),
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   },
   transports: ["websocket", "polling"],
@@ -22,8 +30,10 @@ const io = socketIo(server, {
 // Middleware
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: getAllowedOrigins(),
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 )
 app.use(express.json({ limit: "10mb" }))
