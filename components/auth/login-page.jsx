@@ -1,9 +1,11 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import { Bus, LogIn, Eye, EyeOff, CheckCircle, AlertCircle } from "lucide-react"
 import { authService } from "@/lib/auth-service"
+import { authApi } from "@/lib/api-helpers"
 import SignupPage from "./signup-page"
 
 const DEMO_CREDENTIALS = {
@@ -22,6 +24,20 @@ export default function LoginPage({ onLogin, onSignup }) {
   const [error, setError] = useState(null)
   const [success, setSuccess] = useState(null)
   const [showSignup, setShowSignup] = useState(false)
+  const router = useRouter()
+
+  /**
+   * Get dashboard route based on role
+   */
+  const getDashboardRoute = (role) => {
+    const routes = {
+      student: '/dashboard/student',
+      parent: '/dashboard/parent',
+      driver: '/dashboard/driver',
+      admin: '/dashboard/admin',
+    }
+    return routes[role] || '/dashboard'
+  }
 
   const handleDemoLogin = async (role) => {
     setSelectedRole(role)
@@ -40,7 +56,10 @@ export default function LoginPage({ onLogin, onSignup }) {
       
       if (result.success) {
         setSuccess('Login successful!')
-        onLogin(role, result.data.user)
+        // Redirect to dashboard after brief delay
+        setTimeout(() => {
+          router.push(getDashboardRoute(role))
+        }, 500)
       } else {
         setError(result.error || 'Login failed')
       }
@@ -65,7 +84,10 @@ export default function LoginPage({ onLogin, onSignup }) {
       
       if (result.success) {
         setSuccess('Login successful!')
-        onLogin(selectedRole, result.data.user)
+        // Redirect to dashboard after brief delay
+        setTimeout(() => {
+          router.push(getDashboardRoute(selectedRole))
+        }, 500)
       } else {
         setError(result.error || 'Login failed')
       }
