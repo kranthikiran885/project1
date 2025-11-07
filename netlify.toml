@@ -11,6 +11,12 @@
   NEXT_PUBLIC_DEBUG = "false"
   NODE_ENV = "production"
 
+# Redirect all unmatched routes to index for client-side routing (SPA)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
 # Redirect API calls to backend
 [[redirects]]
   from = "/api/*"
