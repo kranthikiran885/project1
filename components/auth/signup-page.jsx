@@ -19,6 +19,7 @@ import {
   Loader,
 } from "lucide-react"
 import { authService } from "@/lib/auth-service"
+import { authApi, buildApiUrl } from "@/lib/api-helpers"
 
 const ROLE_INFO = {
   student: { title: "Student", desc: "Get real-time tracking and bus notifications" },
@@ -39,14 +40,8 @@ const validateEmail = async (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   if (!emailRegex.test(email)) return { valid: false, message: "Invalid email format" }
   try {
-    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '')
-    const response = await fetch(`${baseUrl}/api/auth/check-email`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    })
-    const data = await response.json()
-    if (!response.ok || data.exists) return { valid: false, message: "Email already registered" }
+    const data = await authApi.checkEmail(email)
+    if (data.exists) return { valid: false, message: "Email already registered" }
     return { valid: true, message: "Email available" }
   } catch (error) {
     return { valid: false, message: "Could not verify email" }
@@ -59,14 +54,8 @@ const validatePhone = async (phone) => {
     return { valid: false, message: "Invalid phone number" }
   }
   try {
-    const baseUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '')
-    const response = await fetch(`${baseUrl}/api/auth/check-phone`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ phone })
-    })
-    const data = await response.json()
-    if (!response.ok || data.exists) return { valid: false, message: "Phone number already registered" }
+    const data = await authApi.checkPhone(phone)
+    if (data.exists) return { valid: false, message: "Phone number already registered" }
     return { valid: true, message: "Phone available" }
   } catch (error) {
     return { valid: false, message: "Could not verify phone" }

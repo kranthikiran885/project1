@@ -1,6 +1,8 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { authApi, buildApiUrl } from '@/lib/api-helpers'
 
 const AuthContext = createContext(null)
 
@@ -8,6 +10,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const router = useRouter()
 
   useEffect(() => {
     // Try to restore session from localStorage
@@ -23,25 +26,36 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
+  /**
+   * Get dashboard route based on user role
+   */
+  const getDashboardRoute = (userRole) => {
+    const routes = {
+      student: '/dashboard/student',
+      parent: '/dashboard/parent',
+      driver: '/dashboard/driver',
+      admin: '/dashboard/admin',
+    }
+    return routes[userRole] || '/dashboard'
+  }
+
   const login = async (email, password) => {
     setLoading(true)
     setError(null)
     try {
-      const baseUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '')
-      const response = await fetch(`${baseUrl}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      })
-      
-      if (!response.ok) throw new Error('Login failed')
-      
-      const data = await response.json()
+      const data = await authApi.login(email, password)
       setUser(data.user)
       localStorage.setItem('user', JSON.stringify(data.user))
+      localStorage.setItem('token', data.token)
+      
+      // Redirect to dashboard based on role
+      const dashboardRoute = getDashboardRoute(data.user.role)
+      router.push(dashboardRoute)
+      
       return data
     } catch (err) {
-      setError(err.message)
+      const errorMsg = err.message || 'Login failed'
+      setError(errorMsg)
       throw err
     } finally {
       setLoading(false)
@@ -52,6 +66,7 @@ export function AuthProvider({ children }) {
     setUser(null)
     localStorage.removeItem('user')
     localStorage.removeItem('token')
+    router.push('/auth')
   }
 
   return (
