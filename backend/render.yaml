@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: ctms-backend
+    env: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        fromDatabase:
+          name: ctms-mongodb
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        value: https://your-frontend-url.vercel.app
+
+databases:
+  - name: ctms-mongodb
+    databaseName: ctms
+    user: ctms_user

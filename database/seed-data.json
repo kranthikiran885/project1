@@ -1,0 +1,36 @@
+{
+  "users": [
+    {
+      "email": "admin@ctms.com",
+      "password": "admin123",
+      "role": "admin",
+      "name": "Admin User"
+    },
+    {
+      "email": "driver@ctms.com",
+      "password": "driver123",
+      "role": "driver",
+      "name": "John Driver"
+    },
+    {
+      "email": "student@ctms.com",
+      "password": "student123",
+      "role": "student",
+      "name": "Alex Student"
+    }
+  ],
+  "vehicles": [
+    {
+      "registrationNumber": "BUS-001",
+      "capacity": 50,
+      "route": "Route A1",
+      "status": "active"
+    },
+    {
+      "registrationNumber": "BUS-002",
+      "capacity": 45,
+      "route": "Route A2",
+      "status": "active"
+    }
+  ]
+}

@@ -1,0 +1,150 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #0f0f1e;
+  --foreground: #e8e8f0;
+  --card: #1a1a2e;
+  --card-foreground: #e8e8f0;
+  --primary: #ff6b35;
+  --primary-foreground: #ffffff;
+  --secondary: #004e89;
+  --secondary-foreground: #ffffff;
+  --accent: #00d4ff;
+  --accent-foreground: #0f0f1e;
+  --muted: #3a3a4e;
+  --muted-foreground: #9a9aaa;
+  --destructive: #ff4757;
+  --destructive-foreground: #ffffff;
+  --border: #2a2a3e;
+  --input: #1a1a2e;
+  --ring: #00d4ff;
+  --chart-1: #ff6b35;
+  --chart-2: #004e89;
+  --chart-3: #00d4ff;
+  --chart-4: #a100f2;
+  --chart-5: #00ffa3;
+  --radius: 0.625rem;
+  --sidebar: #1a1a2e;
+  --sidebar-foreground: #e8e8f0;
+  --sidebar-primary: #ff6b35;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #00d4ff;
+  --sidebar-accent-foreground: #0f0f1e;
+  --sidebar-border: #2a2a3e;
+  --sidebar-ring: #00d4ff;
+}
+
+.dark {
+  --background: #0f0f1e;
+  --foreground: #e8e8f0;
+  --card: #1a1a2e;
+  --card-foreground: #e8e8f0;
+  --primary: #ff6b35;
+  --primary-foreground: #ffffff;
+  --secondary: #004e89;
+  --secondary-foreground: #ffffff;
+  --accent: #00d4ff;
+  --accent-foreground: #0f0f1e;
+  --muted: #3a3a4e;
+  --muted-foreground: #9a9aaa;
+  --destructive: #ff4757;
+  --destructive-foreground: #ffffff;
+  --border: #2a2a3e;
+  --input: #1a1a2e;
+  --ring: #00d4ff;
+  --chart-1: #ff6b35;
+  --chart-2: #004e89;
+  --chart-3: #00d4ff;
+  --chart-4: #a100f2;
+  --chart-5: #00ffa3;
+  --sidebar: #1a1a2e;
+  --sidebar-foreground: #e8e8f0;
+  --sidebar-primary: #ff6b35;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #00d4ff;
+  --sidebar-accent-foreground: #0f0f1e;
+  --sidebar-border: #2a2a3e;
+  --sidebar-ring: #00d4ff;
+}
+
+@theme inline {
+  --font-sans: "Geist", "Geist Fallback";
+  --font-mono: "Geist Mono", "Geist Mono Fallback";
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Neon glow effects */
+@layer utilities {
+  .glow-primary {
+    @apply shadow-lg shadow-primary/50;
+  }
+
+  .glow-accent {
+    @apply shadow-lg shadow-accent/50;
+  }
+
+  .glow-text-primary {
+    text-shadow: 0 0 8px rgba(255, 107, 53, 0.6);
+  }
+
+  .glow-text-accent {
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.6);
+  }
+
+  .gradient-border {
+    @apply border border-transparent bg-clip-padding;
+    background-image: linear-gradient(var(--background), var(--background)),
+      linear-gradient(90deg, var(--primary), var(--accent));
+    background-clip: padding-box, border-box;
+    background-origin: padding-box, border-box;
+  }
+
+  .backdrop-blur-xl {
+    @apply backdrop-blur-xl;
+  }
+}
